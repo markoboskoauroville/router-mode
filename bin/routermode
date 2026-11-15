@@ -1,0 +1,4 @@
+#!/bin/sh
+# routermode: the TL-MR110 router's mode and internet link (repo ROUTER_MODE)
+D="$HOME/Developer/ROUTER_MODE"
+exec "$D/.venv/bin/python" -I "$D/routermode.py" "$@"
