@@ -4,7 +4,7 @@
 // command `routermode`). The app never holds the router password: a switch runs `routermode set phone|sim --yes`.
 import AppKit
 
-let VERSION = 1
+let VERSION = 2
 let APP_NAME = "Router Mode (Mantra)"
 
 let home = FileManager.default.homeDirectoryForCurrentUser.path
@@ -43,6 +43,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     func applicationDidFinishLaunching(_ n: Notification) {
         item.button?.setAccessibilityLabel(APP_NAME)
         menu.delegate = self
+        HoverCard.attach(to: item, autoPipe: true) { [weak self] in
+            guard let self = self else { return HoverCard.Content(name: "Router Mode (Mantra)", what: "", state: "") }
+            return HoverCard.Content(name: "Router Mode (Mantra)", what: "Chooses the phone or the SIM for the internet", state: (self.busy ?? "WATCHING").uppercased(), stateColor: .systemGreen, lines: [self.line1.title, self.line2.title, self.warn.isHidden ? "Warnings: none" : self.warn.title])
+        }
         menu.autoenablesItems = false
         for l in [line1, line2, warn] { l.isEnabled = false; menu.addItem(l) }
         menu.addItem(.separator())
